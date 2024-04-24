@@ -27,12 +27,12 @@ type Props = {
   hasError?: boolean
 }
 
-interface ArugmentsRow {
+interface ArgumentsRow {
   [key: number]: ArgumentBasic[]
 }
 
 const formatArguments = (args: ArgumentBasic[]) => {
-  let formatted: ArugmentsRow = {}
+  let formatted: ArgumentsRow = {}
   args.forEach((arg) => {
     if (arg.row <= 0) return;
     if (!(arg.row in formatted)) formatted[arg.row] = []
@@ -63,6 +63,8 @@ const ExperimentForm: React.FC<Props> = ({
   const { t } = useTranslation()
 
   const [visiblePreview, setVisiblePreview] = useState(false)
+  const [selectedInputType, setSelectedInputType] = useState<string>("code")
+  const inputTypes = ["code", "file"]
   const [selectedExperiment, setSelectedExperiment] = useState<ExperimentBasicFragment | undefined>(
     experiments[0],
   )
@@ -208,10 +210,36 @@ const ExperimentForm: React.FC<Props> = ({
 
     let rows: React.ReactNode[] = []
 
-    Object.values(formatted).forEach((val: ArgumentBasic[], rowIndex: number) => {
+    if (selectedExperiment?.deviceType.name.includes("L3Dcube")) {
       let cols: React.ReactNode[] = []
 
-      val.forEach((argument: ArgumentBasic, colIndex: number) => {
+      const dict: { [key: string]: string } = { code: "textarea", file: "file" };
+      const argument = findArgumentWithType(formatted, dict[selectedInputType]);
+
+      if (argument !== null) {
+        cols = [
+          <CCol key={1}>
+            <ExperimentFormArgument
+              argument={argument}
+              val={experimentInput.find((arg) => arg.name === argument.name)?.value}
+              handleChange={upsertArgument}
+              className="mb-3"
+              style={{ minWidth: '150px', maxWidth: '100%' }}
+            />
+          </CCol>,
+        ];
+
+        rows = [
+          rows,
+          <CRow className="align-items-end" key={1}>
+            {cols}
+          </CRow>,
+        ]
+      }
+    } else {
+    Object.values(formatted).forEach((val: ArgumentBasic[], rowIndex: number) => {
+      let cols: React.ReactNode[] = []
+      val.forEach((argument: ArgumentBasic, colIndex: number) => {            
         cols = [
           ...cols,
           <CCol key={colIndex}>
@@ -232,9 +260,24 @@ const ExperimentForm: React.FC<Props> = ({
           {cols}
         </CRow>,
       ]
-    })
+    })}
 
     return rows
+  }
+
+  function findArgumentWithType(data: ArgumentsRow, type: string): ArgumentBasic | null {
+    let result: ArgumentBasic | null = null;
+  
+    Object.values(data).some((group: ArgumentBasic[]) => { 
+      const found = group.find(item => item.type === type);
+      if (found) {
+        result = found;
+        return true; // Exit the loop once found
+      }
+      return false; // Continue if not found
+    });
+  
+    return result;
   }
 
   const schemas = data?.schemas
@@ -311,6 +354,30 @@ const ExperimentForm: React.FC<Props> = ({
                     <CIcon content={cilImage} />
                   </CButton>
                 </div>
+              </>
+            )}
+            {selectedExperiment?.deviceType.name.includes("L3Dcube") && (
+              <>
+                <CFormLabel className="d-block">{t('experiments.columns.input_type')}</CFormLabel>
+                <div className="d-flex mb-3">
+                  <CFormSelect
+                    aria-label="input_type"
+                    id="input_type"
+                    required={true}
+                    disabled={!!userExperimentCurrent}
+                    value={selectedInputType}
+                    onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                      setSelectedInputType(event.target.value)   /* tuto* */
+                    }}
+                  >
+                    {/* <option value={undefined}></option> */}
+                    {inputTypes?.map((it: string) => (
+                      <option value={it} key={it}>
+                        {it}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </div>  
               </>
             )}
           </CCol>

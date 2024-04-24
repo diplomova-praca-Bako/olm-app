@@ -34,6 +34,59 @@ const ExperimentFormArgument: React.FC<Props> = ({
     setValue(val !== undefined ? val : argument?.default_value?.toString() || '')
   }, [argument, val])
 
+  if (argument.type === "textarea") {
+    return (
+      <div className={className} style={style}>
+        <CFormLabel>{argument.label}</CFormLabel>
+        <textarea
+          className="col-12"
+          rows={12}
+          id={argument.name}
+          value={value}
+          placeholder={argument.label}
+          required={true}
+          onChange={(event) => {
+            setValue(event.target.value);
+          }}
+        />
+      </div>
+    );
+  }
+
+  if (argument.type === "file") {
+    return (
+      <div className={className} style={style}>
+        <CFormLabel>{argument.label}</CFormLabel>
+        <CFormInput
+          type="file"
+          id={argument.name}
+          accept=".c, .py, .txt"
+          required={false}
+          onChange={(event) => {
+            const file = event.target.files && event.target.files[0];
+            if (file) {
+              const allowedExtensions = /\.(txt|c|py)$/i;
+              if (!allowedExtensions.test(file.name)) {
+                alert('Invalid file type. Only .txt, .c, and .py files are allowed.'); // TODO: look into this later
+                event.target.value = '';
+                return;
+              }
+          
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                if (e.target && e.target.result !== null) {
+                  setValue(e.target.result.toString());
+                }
+              };
+              reader.readAsText(file);
+            }
+          }}
+          
+        />
+      </div>
+    );
+  }
+
   return argument.options && argument.options.length ? (
     <div className={className} style={style}>
       <CFormLabel className="d-block">{argument.label}</CFormLabel>

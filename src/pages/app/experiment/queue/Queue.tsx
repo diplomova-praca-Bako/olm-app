@@ -23,6 +23,7 @@ const Queue: React.FC = () => {
   const handleSubmit = async ({
     experimentId,
     schemaId,
+    demoId,
     softwareId,
     command,
     experimentInput,
@@ -32,6 +33,7 @@ const Queue: React.FC = () => {
         queueUserExperimentInput: {
           experiment_id: experimentId,
           schema_id: schemaId,
+          demo_id: demoId,
           software_id: softwareId,
           input: [
             {

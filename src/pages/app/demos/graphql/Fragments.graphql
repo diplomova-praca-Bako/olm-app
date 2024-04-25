@@ -1,0 +1,27 @@
+fragment DemoBasic on Demo {
+  id
+  name
+  demo
+  deviceType {
+    name
+  }
+  software {
+    name
+  }
+  deleted_at
+}
+
+fragment DemoExtended on Demo {
+  id
+  name
+  note
+  demo
+  deviceType {
+    id
+    name
+  }
+  software {
+    id
+    name
+  }
+}

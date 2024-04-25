@@ -16,6 +16,12 @@ query ExperimentSchemas($deviceTypeId: ID!, $softwareId: ID!) {
   }
 }
 
+query ExperimentDemos($deviceTypeId: ID!, $softwareId: ID!) {
+  demos(device_type_id: $deviceTypeId, software_id: $softwareId, trashed: WITHOUT) {
+    ...ExperimentDemo
+  }
+}
+
 query UserExperimentCurrent {
   userExperimentCurrent {
     ...UserExperimentDashboard

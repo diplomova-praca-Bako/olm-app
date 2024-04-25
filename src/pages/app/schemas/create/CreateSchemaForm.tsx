@@ -30,7 +30,6 @@ const CreateSchemaForm: React.FC = () => {
   const deviceTypesAndSoftware = useDeviceTypesAndSoftwareQuery()
   const availableSchemaTypes = useAvailableSchemaTypesQuery()
 
-    console.log(deviceTypesAndSoftware)
   const [createSchemaInput, setCreateSchemaInput] = useState<CreateSchemaInput>({
     name: '',
     type: '-1',

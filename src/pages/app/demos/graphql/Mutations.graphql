@@ -1,0 +1,24 @@
+mutation CreateDemo($createDemoInput: CreateDemoInput!) {
+  createDemo(input: $createDemoInput) {
+    ...DemoExtended
+  }
+}
+
+mutation UpdateDemo($updateDemoInput: UpdateDemoInput!) {
+  updateDemo(input: $updateDemoInput) {
+    ...DemoExtended
+  }
+}
+
+
+mutation DeleteDemo($id: ID!) {
+  deleteDemo(id: $id) {
+    id
+  }
+}
+
+mutation RestoreDemo($id: ID!) {
+  restoreDemo(id: $id) {
+    id
+  }
+}

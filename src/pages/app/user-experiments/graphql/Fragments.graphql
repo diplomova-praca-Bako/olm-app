@@ -36,12 +36,19 @@ fragment UserExperimentSchema on Schema {
   preview
 }
 
+fragment UserExperimentDemo on Demo {
+  name
+}
+
 fragment UserExperimentExtended on UserExperiment {
   ...UserExperimentBasic
   note
   remote_id
   schema(trashed: WITH) {
     ...UserExperimentSchema
+  }
+  demo(trashed: WITH) {
+    ...UserExperimentDemo
   }
   input {
     script_name

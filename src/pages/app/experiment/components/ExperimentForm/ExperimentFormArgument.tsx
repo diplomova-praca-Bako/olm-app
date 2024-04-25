@@ -60,14 +60,14 @@ const ExperimentFormArgument: React.FC<Props> = ({
         <CFormInput
           type="file"
           id={argument.name}
-          accept=".c, .py, .txt"
-          required={false}
+          accept=".c, .cpp, .py, .txt" // TODO: look into this later
+          required={true}
           onChange={(event) => {
             const file = event.target.files && event.target.files[0];
             if (file) {
-              const allowedExtensions = /\.(txt|c|py)$/i;
+              const allowedExtensions = /\.(txt|c|py|cpp)$/i;
               if (!allowedExtensions.test(file.name)) {
-                alert('Invalid file type. Only .txt, .c, and .py files are allowed.'); // TODO: look into this later
+                alert('Invalid file type. Only .txt, .c, .cpp and .py files are allowed.'); // TODO: look into this later
                 event.target.value = '';
                 return;
               }

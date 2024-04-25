@@ -102,6 +102,7 @@ export interface PlaceholderReservation {
 export interface ExperimentFormInput {
   experimentId: string
   schemaId: string | undefined
+  demoId: string | undefined
   softwareId: string
   command: string
   experimentInput: UserExperimentArgInput[]

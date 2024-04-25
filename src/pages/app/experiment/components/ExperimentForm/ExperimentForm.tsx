@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { CButton, CCol, CForm, CFormLabel, CFormSelect, CRow } from '@coreui/react'
+import { CButton, CCol, CForm, CFormLabel, CFormSelect, CRow, CFormCheck } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilImage } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
@@ -8,7 +8,9 @@ import { toast } from 'react-toast'
 import {
   ExperimentBasicFragment,
   ExperimentSchemaFragment,
+  ExperimentDemoFragment,
   useExperimentSchemasQuery,
+  useExperimentDemosQuery,
   UserExperimentArgInput,
   UserExperimentDashboardFragment,
 } from '__generated__/graphql'
@@ -64,18 +66,21 @@ const ExperimentForm: React.FC<Props> = ({
 
   const [visiblePreview, setVisiblePreview] = useState(false)
   const [selectedInputType, setSelectedInputType] = useState<string>("code")
-  const inputTypes = ["code", "file"]
+  const inputTypes = ["code", "file", "demo"]
+
   const [selectedExperiment, setSelectedExperiment] = useState<ExperimentBasicFragment | undefined>(
     experiments[0],
   )
   const [selectedSchema, setSelectedSchema] = useState<ExperimentSchemaFragment | undefined>()
+  const [selectedDemo, setSelectedDemo] = useState<ExperimentDemoFragment | undefined>() // Added state for selected demo
+  
   const [selectedCommand, setSelectedCommand] = useState<string | undefined>(
     experiments[0].commands[0] || undefined,
   )
 
   const [experimentInput, setExperimentInput] = useState<UserExperimentArgInput[]>([])
 
-  const { data, loading, error } = useExperimentSchemasQuery({
+  const { data: schemaData, loading: schemaLoading, error: schemaError } = useExperimentSchemasQuery({ 
     notifyOnNetworkStatusChange: true,
     variables: {
       deviceTypeId: (userExperimentCurrent?.experiment.device?.deviceType.id ||
@@ -85,6 +90,17 @@ const ExperimentForm: React.FC<Props> = ({
         (selectedExperiment?.software.id as string),
     },
   })
+
+  const { data: demoData, loading: demoLoading, error: demoError } = useExperimentDemosQuery({
+    notifyOnNetworkStatusChange: true,
+    variables: {
+      deviceTypeId: (userExperimentCurrent?.experiment.device?.deviceType.id ||
+        selectedExperiment?.deviceType.id) as string,
+      softwareId:
+        userExperimentCurrent?.experiment.software.id ||
+        (selectedExperiment?.software.id as string),
+    },
+  });
 
   const getCommands = useCallback(
     (ue?: UserExperimentDashboardFragment) => {
@@ -120,10 +136,12 @@ const ExperimentForm: React.FC<Props> = ({
       setSelectedCommand(commands[0] || undefined)
 
       const schema = userExperiment ? userExperiment.schema : undefined
-
+      const demo = userExperiment ? userExperiment.demo : undefined
+      
       if (schema) setSelectedSchema(schema)
+      if (demo) setSelectedDemo(demo)
     },
-    [experiments, getCommands, selectedExperiment, data?.schemas],
+    [experiments, getCommands, selectedExperiment, schemaData?.schemas, demoData?.demos],
   )
 
   const getExperimentInput = useCallback(() => {
@@ -174,6 +192,13 @@ const ExperimentForm: React.FC<Props> = ({
     replaceExperimentInput()
   }, [selectedExperiment, selectedSchema, replaceExperimentInput])
 
+  useEffect(() => {
+    if (!selectedExperiment?.has_demo){
+      setSelectedDemo(undefined);
+    }
+    replaceExperimentInput()
+  }, [selectedExperiment, selectedSchema, replaceExperimentInput])
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
@@ -189,6 +214,7 @@ const ExperimentForm: React.FC<Props> = ({
     handleSubmitForm({
       experimentId: selectedExperiment.id,
       schemaId: selectedSchema?.id,
+      demoId: selectedDemo?.id,
       softwareId: selectedExperiment.software.id,
       command: selectedCommand,
       experimentInput: experimentInput,
@@ -213,6 +239,42 @@ const ExperimentForm: React.FC<Props> = ({
     if (selectedExperiment?.deviceType.name.includes("L3Dcube")) {
       let cols: React.ReactNode[] = []
 
+      
+      if(selectedInputType === "demo"){
+        cols = [
+          <CCol key={1}>
+                <CFormLabel className="d-block">{t('experiments.columns.demo')}</CFormLabel>
+                <div className="d-flex mb-3">
+                  <CFormSelect
+                    aria-label="demo"
+                    id="demo"
+                    required={true}
+                    disabled={!!userExperimentCurrent}
+                    value={selectedDemo?.id}
+                    onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                      setSelectedDemo(demos?.find((demo) => demo.id === event.target.value))
+                    }}
+                  >
+                    <option value={undefined}></option>
+                    {demos?.map((demo: ExperimentDemoFragment) => (
+                      <option value={demo.id} key={demo.id}>
+                        {demo.name}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </div>
+          </CCol>,
+
+        ]    
+        rows = [
+          rows,
+          <CRow className="align-items-end" key={1}>
+            {cols}
+          </CRow>,
+        ]    
+      }
+      
+      
       const dict: { [key: string]: string } = { code: "textarea", file: "file" };
       const argument = findArgumentWithType(formatted, dict[selectedInputType]);
 
@@ -279,9 +341,11 @@ const ExperimentForm: React.FC<Props> = ({
   
     return result;
   }
+  
 
-  const schemas = data?.schemas
-
+  const schemas = schemaData?.schemas
+  const demos = demoData?.demos
+  
   return (
     <>
       {selectedSchema?.preview && (
@@ -294,8 +358,10 @@ const ExperimentForm: React.FC<Props> = ({
       <CForm
           className={"pb-2"}
           onSubmit={handleSubmit}>
-        {loading && <SpinnerOverlay transparent={true} />}
-        {error && <ErrorNotifier error={error} />}
+        {schemaLoading && <SpinnerOverlay transparent={true} />}
+        {schemaError && <ErrorNotifier error={schemaError} />}
+        {demoLoading && <SpinnerOverlay transparent={true} />}
+        {demoError && <ErrorNotifier error={demoError} />}
         <CRow>
           <CCol style={{flex: "1 0"}}>
             <CFormLabel className="d-block">{t('experiments.columns.experiment')}</CFormLabel>
@@ -309,6 +375,7 @@ const ExperimentForm: React.FC<Props> = ({
                 const experiment = experiments?.find(
                   (experiment) => experiment.id === event.target.value,
                 )
+                setSelectedDemo(undefined)
                 setSelectedExperiment(experiment)
                 setSelectedCommand(experiment?.commands[0] || undefined)
               }}
@@ -356,17 +423,19 @@ const ExperimentForm: React.FC<Props> = ({
                 </div>
               </>
             )}
+
             {selectedExperiment?.deviceType.name.includes("L3Dcube") && (
               <>
                 <CFormLabel className="d-block">{t('experiments.columns.input_type')}</CFormLabel>
                 <div className="d-flex mb-3">
                   <CFormSelect
-                    aria-label="input_type"
-                    id="input_type"
+                    aria-label="demo"
+                    id="demo"
                     required={true}
                     disabled={!!userExperimentCurrent}
                     value={selectedInputType}
                     onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                      setSelectedDemo(undefined)
                       setSelectedInputType(event.target.value)   /* tuto* */
                     }}
                   >

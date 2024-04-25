@@ -43,6 +43,7 @@ const ExperimentDashboardWrapper: React.FC<Props> = ({experiments, userExperimen
     const handleSubmit = async ({
                                     experimentId,
                                     schemaId,
+                                    demoId,
                                     softwareId,
                                     command,
                                     experimentInput,
@@ -54,6 +55,7 @@ const ExperimentDashboardWrapper: React.FC<Props> = ({experiments, userExperimen
                     experiment_id: experimentId,
                     user_experiment_id: running ? userExperiment?.id : undefined,
                     schema_id: schemaId,
+                    demo_id: demoId,
                     software_id: softwareId,
                     input: [
                         {

@@ -10,6 +10,7 @@ import {
   CFormSelect,
   CFormTextarea,
   CRow,
+  CFormSwitch,
 } from '@coreui/react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
@@ -37,6 +38,7 @@ const formatDemoInput = (demo: DemoExtendedFragment) => {
     device_type_id: demo.deviceType.id,
     software_id: demo.software.id,
     note: demo.note,
+    visible_preview: demo.visible_preview
   }
 }
 
@@ -162,28 +164,43 @@ const EditDemoForm = ({ demo }: Props) => {
         </CFormFloating>
 
         <CRow>
-          <CCol md={6}>
+          <CCol md={8}>
             <CFormLabel>{t('demos.columns.demo')}</CFormLabel>
-            <div className="d-flex mb-3">
-              <CFormInput
-                type="file"
-                id="demo"
-                onChange={({ target: { validity, files } }) => {
-                  if (validity.valid)
-                    setUpdateDemoInput({ ...updateDemoInput, demo: files ? files[0] : null })
-                }}
-              />
-              {demo.demo && (
-                <CButton
-                  color="success"
-                  className="ms-2 d-inline-flex justify-content-center align-items-center text-light"
-                  type="button"
-                  onClick={handleDownloadDemo}
-                >
-                  <CIcon content={cilCloudDownload} />
-                  <span className="ms-1 text-nowrap">{demo.demo.split('/').pop()}</span>
-                </CButton>
-              )}
+            <div className="mb-3 d-flex align-items-end">
+              <div>
+                <CFormInput
+                  type="file"
+                  id="demo"
+                  onChange={({ target: { validity, files } }) => {
+                    if (validity.valid)
+                      setUpdateDemoInput({ ...updateDemoInput, demo: files ? files[0] : null })
+                  }}
+                />
+              </div>
+              <div className="me-3">
+                {demo.demo && (
+                  <CButton
+                    color="success"
+                    className="ms-2 d-inline-flex justify-content-center align-items-center text-light"
+                    type="button"
+                    onClick={handleDownloadDemo}
+                  >
+                    <CIcon content={cilCloudDownload} />
+                    <span className="ms-1 text-nowrap">{demo.demo.split('/').pop()}</span>
+                  </CButton>
+                )}
+              </div>
+              <div>
+                <CFormSwitch 
+                  id="visible_preview" 
+                  label={t('demos.columns.visible_preview')}
+                  size="xl"
+                  checked={updateDemoInput.visible_preview || false}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                      setUpdateDemoInput({ ...updateDemoInput, visible_preview: event.target.checked })
+                  }
+                />
+              </div>
             </div>
           </CCol>
         </CRow>

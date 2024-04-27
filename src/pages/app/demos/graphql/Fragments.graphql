@@ -9,6 +9,7 @@ fragment DemoBasic on Demo {
     name
   }
   deleted_at
+  visible_preview
 }
 
 fragment DemoExtended on Demo {
@@ -24,4 +25,5 @@ fragment DemoExtended on Demo {
     id
     name
   }
+  visible_preview
 }

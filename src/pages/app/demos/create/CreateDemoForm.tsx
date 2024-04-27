@@ -8,6 +8,7 @@ import {
   CFormSelect,
   CFormTextarea,
   CRow,
+  CFormSwitch,
 } from '@coreui/react'
 import { ButtonBack, ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
 import React, { useState } from 'react'
@@ -32,7 +33,8 @@ const [createDemoInput, setCreateDemoInput] = useState<CreateDemoInput>({
   device_type_id: deviceTypesAndSoftware.data?.deviceTypes[0].id || '-1',
   software_id: deviceTypesAndSoftware.data?.software[0].id || '-1',
   note: undefined,
-  demo: null
+  demo: null,
+  visible_preview: undefined
 })
 
 const [createDemoMutation, { loading, error }] = useCreateDemoMutation()
@@ -126,7 +128,9 @@ return (
 
     <CRow>
       <CCol md={6}>
-        <div className="mb-3">
+       <div className="mb-3 d-flex align-items-end">
+        <div className="me-3">
+
           <CFormLabel>{t('demos.columns.demo')}</CFormLabel>
           <CFormInput
             type="file"
@@ -134,10 +138,24 @@ return (
             onChange={({ target: { validity, files } }) => {
               if (validity.valid)
                 setCreateDemoInput({ ...createDemoInput, demo: files ? files[0] : null })
-                console.log(files);
             }}
           />
         </div>
+
+        <div>
+        <CFormSwitch 
+          id="visible_preview" 
+          label={t('demos.columns.visible_preview')}
+          size="xl"
+          checked={createDemoInput.visible_preview || false}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setCreateDemoInput({ ...createDemoInput, visible_preview: event.target.checked })
+          }           
+          />
+        </div>
+      </div>
+
+
       </CCol>
 
     </CRow>

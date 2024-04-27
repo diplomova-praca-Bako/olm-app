@@ -17,24 +17,31 @@ const defaultLayout: Layouts = {
         {i: "experiment-animation", x: 11, y: 7, w: 5, h: 5, minW: 3, minH: 5, maxH: 5} as Layout,
         {i: "experiment-form", x: 6, y: 0, w: 10, h: 7, minW: 3, minH: 7, maxH: 7} as Layout,
         {i: "experiment-video", x: 6, y: 7, w: 5, h: 7, minW: 3, minH: 7, maxH: 7} as Layout,
+        {i: "available-functions",  x: 0, y: 0, w: 6, h: 9, minW: 3, minH: 3} as Layout,
     ],
     lg: [
         {i: "experiment-plot", x: 0, y: 0, w: 6, h: 9, minW: 3, minH: 3} as Layout,
         {i: "experiment-animation", x: 6, y: 0, w: 6, h: 6, minW: 3, minH: 6, maxH: 6} as Layout,
         {i: "experiment-form", x: 6, y: 6, w: 6, h: 10, minW: 3, minH: 10, maxH: 10} as Layout,
         {i: "experiment-video", x: 0, y: 9, w: 6, h: 8, minW: 3, minH: 8, maxH: 8} as Layout,
+        {i: "available-functions", x: 0, y: 0, w: 6, h: 9, minW: 3, minH: 3} as Layout,
+
     ],
     sm: [
         {i: "experiment-plot", x: 0, y: 0, w: 2, h: 9, minW: 2, minH: 3} as Layout,
         {i: "experiment-animation", x: 2, y: 0, w: 2, h: 4, minW: 2, minH: 4, maxH: 4} as Layout,
         {i: "experiment-form", x: 2, y: 0, w: 2, h: 11, minW: 2, minH: 11, maxH: 11} as Layout,
         {i: "experiment-video", x: 0, y: 9, w: 2, h: 5, minW: 2, minH: 3, maxH: 3} as Layout,
+        {i: "available-functions", x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2} as Layout,
+
     ],
     xs: [
         {i: "experiment-plot", x: 0, y: 0, w: 1, h: 9, minW: 1, minH: 2} as Layout,
         {i: "experiment-animation", x: 0, y: 25, w: 1, h: 6, minW: 1, minH: 6, maxH: 6} as Layout,
         {i: "experiment-form", x: 0, y: 9, w: 1, h: 8, minW: 1, minH: 8, maxH: 8} as Layout,
         {i: "experiment-video", x: 0, y: 32, w: 1, h: 7, minW: 1, minH: 7, maxH: 7} as Layout,
+        {i: "available-functions", x: 0, y: 0, w: 1, h: 2, minW: 1, minH: 2} as Layout,
+
     ]
 }
 
@@ -54,6 +61,7 @@ const ExperimentDashboard: React.FC<Props> = () => {
     const {t} = useTranslation()
     const [savedExperimentFormMinimization, setSavedExperimentFormMinimization] = useLocalStorage<boolean>("experimentFormMinimization", false)
     const [savedExperimentPlotMinimization, setSavedExperimentPlotMinimization] = useLocalStorage<boolean>("experimentPlotMinimization", false)
+    const [savedExperimentAvailableFunctionsMinimization, setSavedExperimentAvailableFunctionsMinimization] = useLocalStorage<boolean>("experimentPlotMinimization", false)
     const [savedExperimentAnimationMinimization, setSavedExperimentAnimationMinimization] = useLocalStorage<boolean>("experimentAnimationMinimization", false)
     const [savedExperimentVideoMinimization, setSavedExperimentVideoMinimization] = useLocalStorage<boolean>("experimentVideoMinimization", false)
     const [savedGridLayout, setSavedGridLayout] = useLocalStorage<Layouts>("gridLayout", defaultLayout)
@@ -62,6 +70,7 @@ const ExperimentDashboard: React.FC<Props> = () => {
     const [, experimentAnimationHeight] = useSize(experimentRefs.current["experiment-animation"])
     const [, experimentPlotHeight] = useSize(experimentRefs.current["experiment-plot"])
     const [, experimentVideoHeight] = useSize(experimentRefs.current["experiment-video"])
+    const [, experimentAvailableFunctionsHeight] = useSize(experimentRefs.current["available-functions"])
     const isResizing = useRef(false)
     const breakpoint = useRef("")
 
@@ -69,7 +78,7 @@ const ExperimentDashboard: React.FC<Props> = () => {
         if (!isResizing.current) {
             handleExperimentLayoutSizeChange()
         }
-    }, [experimentFormHeight, experimentAnimationHeight, experimentPlotHeight, experimentVideoHeight]);
+    }, [experimentFormHeight, experimentAnimationHeight, experimentPlotHeight, experimentVideoHeight, experimentAvailableFunctionsHeight]);
 
     const handleResize: ItemCallback = (layout,
                                         oldItem,
@@ -123,6 +132,10 @@ const ExperimentDashboard: React.FC<Props> = () => {
         window.dispatchEvent(new Event('resize'));
     }
 
+    const hasL3DCube = dashboard.experiments.some((experiment: { deviceType: { name: string | string[]; }; }) =>
+        experiment.deviceType.name.includes('L3Dcube')
+      );
+
     return (
         <ResponsiveGridLayout
             layouts={savedGridLayout}
@@ -137,15 +150,38 @@ const ExperimentDashboard: React.FC<Props> = () => {
             onDragStop={handleResizeAndDragStop}
             onBreakpointChange={(newBreakpoint) => breakpoint.current = newBreakpoint}
             draggableHandle=".draggable-header">
-            <div key="experiment-plot">
-                <Card title={t("experiments.dashboard.graph")}
-                      minimization={[savedExperimentPlotMinimization, setSavedExperimentPlotMinimization]}
-                      className={"border-top-primary border-top-5 overflow-hidden h-100 is-draggable"}>
-                    <div className="h-100" ref={element => experimentRefs.current["experiment-plot"] = element}>
-                        <ExperimentPlot/>
-                    </div>
-                </Card>
-            </div>
+
+
+            {hasL3DCube ? (
+                <div key="available-functions">
+                    <Card title={t("experiments.dashboard.led.available_functions.title")}
+                        minimization={[savedExperimentAvailableFunctionsMinimization, setSavedExperimentAvailableFunctionsMinimization]}
+                        className={"border-top-primary border-top-5 overflow-hidden h-100 is-draggable"}>
+                        <div className="h-100" ref={element => experimentRefs.current["available-functions"] = element}>
+                            <ul>
+                                <li><strong>setLed</strong> - {t("experiments.dashboard.led.available_functions.setLed")}</li>
+                                <li><strong>setLeds</strong> - {t("experiments.dashboard.led.available_functions.setLeds")}</li>
+                                <li><strong>sleep</strong> - {t("experiments.dashboard.led.available_functions.sleep")}</li>
+                                <li><strong>clearCube</strong> - {t("experiments.dashboard.led.available_functions.clearCube")}</li>
+                            </ul>
+                        </div>
+                    </Card>
+                </div>
+                ) :
+                (
+                <div key="experiment-plot">
+                    <Card title={t("experiments.dashboard.graph")}
+                          minimization={[savedExperimentPlotMinimization, setSavedExperimentPlotMinimization]}
+                          className={"border-top-primary border-top-5 overflow-hidden h-100 is-draggable"}>
+                        <div className="h-100" ref={element => experimentRefs.current["experiment-plot"] = element}>
+                            <ExperimentPlot/>
+                        </div>
+                    </Card>
+                </div>
+                )
+            
+            }
+
             {[dashboard.userExperiment?.experiment.device?.deviceType.name, dashboard.experiments[0].deviceType.name].includes('tom1a') && (
                 <div key="experiment-animation">
                     <Card title={t("experiments.dashboard.animation")}

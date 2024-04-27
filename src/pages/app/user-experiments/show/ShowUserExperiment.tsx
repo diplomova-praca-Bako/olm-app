@@ -33,11 +33,14 @@ const ShowUserExperiment: React.FC = () => {
   useEffect(() => {
     if (data?.userExperiment) {
       setUserExperiment(data.userExperiment)
+      console.log(data.userExperiment.experiment)
     }
   }, [data])
 
   if (!loading && !data?.userExperiment) return <div>404</div>
   if (error) return <ErrorNotifier error={error} />
+
+  const isL3Dcube = !userExperiment?.experiment.deviceType.name.includes("L3Dcube")
 
   return (
     <Card
@@ -45,7 +48,7 @@ const ShowUserExperiment: React.FC = () => {
       title={t('actions.show')}
       className="mb-3"
       actions={
-        userExperiment?.filled? (
+        userExperiment?.filled && !userExperiment?.experiment.deviceType.name.includes("L3Dcube") ? (
           <ShowUserExperimentDownload
             url={(new URL(process.env.REACT_APP_API_ENDPOINT || 'https://olm-api.test/graphql')).origin
                 + '/api/export/user-experiment-result/' + userExperiment.id}

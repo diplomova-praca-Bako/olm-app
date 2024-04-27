@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { CButton, CCol, CForm, CFormLabel, CFormSelect, CRow, CFormCheck } from '@coreui/react'
+import { CButton, CCol, CForm, CFormLabel, CFormSelect, CRow } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilImage } from '@coreui/icons'
+import { cilImage, cilCode } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 
@@ -14,7 +14,7 @@ import {
   UserExperimentArgInput,
   UserExperimentDashboardFragment,
 } from '__generated__/graphql'
-import { ErrorNotifier, ModalPreview, SpinnerOverlay } from 'components'
+import { ErrorNotifier, ModalPreview, DemoPreview, SpinnerOverlay } from 'components'
 import { ArgumentBasic, ExperimentFormInput } from 'types'
 import ExperimentFormArgument from './ExperimentFormArgument'
 
@@ -241,8 +241,8 @@ const ExperimentForm: React.FC<Props> = ({
 
       
       if(selectedInputType === "demo"){
-        cols = [
-          <CCol key={1}>
+          cols = [
+            <CCol key={1}>
                 <CFormLabel className="d-block">{t('experiments.columns.demo')}</CFormLabel>
                 <div className="d-flex mb-3">
                   <CFormSelect
@@ -262,6 +262,20 @@ const ExperimentForm: React.FC<Props> = ({
                       </option>
                     ))}
                   </CFormSelect>
+
+                  {selectedDemo?.visible_preview && 
+                    <CButton
+                    color="warning"
+                    className="ms-2 d-inline-flex justify-content-center align-items-center"
+                    onClick={() => {
+                      selectedDemo?.demo
+                        ? setVisiblePreview(true)
+                        : toast.error(t('demos.preview.error'))
+                    }}
+                    >
+                      <CIcon content={cilCode} />
+                    </CButton>
+                  }
                 </div>
           </CCol>,
 
@@ -355,6 +369,15 @@ const ExperimentForm: React.FC<Props> = ({
           handleDismiss={() => setVisiblePreview(false)}
         />
       )}
+
+      {selectedDemo?.demo && (
+        <DemoPreview
+          active={visiblePreview}
+          src={selectedDemo.demo}
+          handleDismiss={() => setVisiblePreview(false)}
+        />
+      )}
+
       <CForm
           className={"pb-2"}
           onSubmit={handleSubmit}>

@@ -14,6 +14,7 @@ import Can from './Can/Can'
 import DnDCalendar from './DnDCalendar/DnDCalendar'
 import TrashedDropdown from './TrashedDropdown/TrashedDropdown'
 import ModalPreview from './ModalPreview/ModalPreview'
+import DemoPreview from './ModalPreview/DemoPreview'
 
 export {
   Card,
@@ -32,4 +33,5 @@ export {
   DnDCalendar,
   TrashedDropdown,
   ModalPreview,
+  DemoPreview,
 }

@@ -344,7 +344,8 @@
       "software": "Softvér",
       "note": "Poznámka",
       "demo": "Demo",
-      "preview": "Náhľad"
+      "preview": "Náhľad",
+      "visible_preview": "Povoliť náhľad"
     },
     "index": {
       "title": "Demá"
@@ -355,11 +356,11 @@
     },
     "create": {
       "success": "Demo bolo vytvorené!",
-      "error": "Schému nebolo možné vytvoriť!"
+      "error": "Demo nebolo možné vytvoriť!"
     },
     "update": {
       "success": "Demo bolo zmenené!",
-      "error": "Schému nebolo možné upraviť!"
+      "error": "Demo nebolo možné upraviť!"
     },
     "delete": {
       "confirm": "Naozaj chcete vymazať dané demo?",
@@ -396,6 +397,15 @@
         "move": "Okná je možné premiestňovať v rámci dashboardu. Prejdením myšou na hlavičku okna sa zobrazí kurzor pohybu.Stlačením myši sa okno prichytí a následne je možné ho presúvať po dashboarde. Počas presúvania sa zobrazuje modrý obdĺžnik indikujúci miesto kde okno bude po skončení presúvania.",
         "minimize": "Okná je možné minimalizovať kliknutím na ikonu minimalizácie v pravom hornom rohu okna.",
         "saving": "Všetky modifikácie s oknami dashboardu sú uložené v rámci tohto PC a prehliadača."
+      },
+      "led": {
+        "available_functions": {
+          "title": "Dostupné funkcie",
+          "setLed": "Nastaví farbu jednej LED. pre L3D kocku od LookingGlass sú argumenty funkcie: 1. pole ktoré obsahuje [x,y,z] pozíciu LED a pole ktoré obsahuje [R,G,B] farebný kód. pre L3D kocku vyrobenú na FEI je argumentom funkcie pole, ktoré obsahuje [x,y,z] pozíciu LED.",
+          "setLeds": "Nastaví farbu viacerých LED. pre L3D kocku od LookingGlass sú argumenty funkcie: 1. 2 rozmerné pole ktoré obsahuje [x,y,z] pozície LED a pole ktoré obsahuje R,G,B farebný kód. pre L3D kocku vyrobenú na FEI je argumentom funkcie 2 rozmerné pole, ktoré obsahuje [x,y,z] pozície LED.",
+          "sleep": "Vykoná oneskorenie. Argumentom funkcie sú milisekundy.",
+          "clearCube": "Vypne všetky LED."
+        }
       }
     },
     "columns": {

@@ -93,6 +93,7 @@
     "roles": "Roles and permissions",
     "servers": "Servers",
     "schemas": "Schemas",
+    "demos": "Demos",
     "user_experiments": "Reports"
   },
 
@@ -333,6 +334,50 @@
       "error": "Schema could not be downloaded!"
     }
   },
+  "demos": {
+    "options": "Options",
+    "columns": {
+      "id": "ID",
+      "name": "Name",
+      "demo_type": "Demo Type",
+      "device_type": "Device Type",
+      "software": "Software",
+      "note": "Note",
+      "demo": "Demo",
+      "preview": "Preview",
+      "visible_preview": "Preview visibility"
+    },
+    "index": {
+      "title": "Demos"
+    },
+    "preview": {
+      "title": "Demo Preview",
+      "error": "Demo has no preview."
+    },
+    "create": {
+      "success": "Demo was created!",
+      "error": "Demo could not be created!"
+    },
+    "update": {
+      "success": "Demo was updated!",
+      "error": "Demo could not be updated!"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this demo?",
+      "success": "Demo was deleted!",
+      "error": "Demo could not be deleted!"
+    },
+    "restore": {
+      "confirm": "Are you sure you want to restore this demo?",
+      "success": "Demo was restored!",
+      "error": "Demo could not be restored!"
+    },
+    "download": {
+      "success": "Demo was downloaded!",
+      "error": "Demo could not be downloaded!"
+    }
+  },
+
   "experiments": {
     "title": "Real-time experiment",
     "no_experiments": "The device has no experiments",
@@ -353,12 +398,23 @@
         "move": "Windows can be moved within the dashboard. Hovering the mouse over the header of the window will display the movement cursor. Pressing the mouse will catch the window and then it can be moved around the dashboard. During moving, a blue rectangle is displayed indicating the place where the window will be after the end of moving.",
         "minimize": "Windows can be minimized by clicking the minimize icon in the upper right corner of the window.",
         "saving": "All modifications with dashboard windows are stored within this PC and browser."
+      },
+      "led": {
+        "available_functions": {
+          "title": "Available functions",
+          "setLed": "Sets the color of one LED. for the L3D cube from LookingGlass, the arguments of the function are: 1. the field that contains the [x,y,z] position of the LED and the field that contains the [R,G,B] color code. for an L3D cube made on FEI, the function argument is an array that contains the [x,y,z] position of the LED.",
+          "setLeds": "Sets the color of multiple LEDs. for the L3D cube from LookingGlass, the arguments of the function are: 1. a 2-dimensional field that contains the [x,y,z] positions of the LED and a field that contains the [R,G,B] color code. for an L3D cube made on FEI, the argument of the function is a 2-dimensional array that contains the [x,y,z] position of the LED.",
+          "sleep": "Performs a delay. The function argument is milliseconds.",
+          "clearCube": "Turns off all LEDs."
+        }
       }
+
     },
     "columns": {
       "experiment": "Experiment",
       "schema": "Schema",
-      "command": "Command"
+      "command": "Command",
+      "input_type": "Input type"
     },
     "actions": {
       "run": {

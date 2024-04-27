@@ -512,7 +512,8 @@ const ExperimentForm: React.FC<Props> = ({
             type="submit"
             className="d-inline-flex justify-content-center align-items-center"
             color="primary"
-            disabled={disabled}
+            // disabled={disabled}
+            disabled={false}
           >
             {submitBtnText ? submitBtnText : t('experiments.actions.run.btn')}
           </CButton>

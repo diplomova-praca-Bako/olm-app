@@ -1,6 +1,10 @@
 import { CFormFloating, CFormInput, CFormLabel, CFormSelect } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import AceEditor from 'react-ace';
+import 'brace/mode/python';
+import 'brace/mode/c_cpp';
+import 'brace/theme/textmate';
 
 import { ArgumentBasic } from 'types'
 import { UserExperimentArgInput } from '__generated__/graphql'
@@ -38,16 +42,17 @@ const ExperimentFormArgument: React.FC<Props> = ({
     return (
       <div className={className} style={style}>
         <CFormLabel>{argument.label}</CFormLabel>
-        <textarea
-          className="col-12"
-          rows={12}
-          id={argument.name}
+        <AceEditor
+          mode={argument.label === 'Python' ? 'python' : 'c_cpp'}
+          theme="textmate"
+          name={argument.name}
+          width="100%"
+          height="50vh"
           value={value}
-          placeholder={argument.label}
-          required={true}
-          onChange={(event) => {
-            setValue(event.target.value);
+          onChange={(newCode) => {
+            setValue(newCode);
           }}
+          setOptions={{ useWorker: false }}
         />
       </div>
     );

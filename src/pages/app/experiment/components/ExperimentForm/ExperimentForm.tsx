@@ -452,8 +452,8 @@ const ExperimentForm: React.FC<Props> = ({
                 <CFormLabel className="d-block">{t('experiments.columns.input_type')}</CFormLabel>
                 <div className="d-flex mb-3">
                   <CFormSelect
-                    aria-label="demo"
-                    id="demo"
+                    aria-label="input_type"
+                    id="input_type"
                     required={true}
                     disabled={!!userExperimentCurrent}
                     value={selectedInputType}

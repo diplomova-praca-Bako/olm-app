@@ -40,8 +40,6 @@ const ShowUserExperiment: React.FC = () => {
   if (!loading && !data?.userExperiment) return <div>404</div>
   if (error) return <ErrorNotifier error={error} />
 
-  const isL3Dcube = !userExperiment?.experiment.deviceType.name.includes("L3Dcube")
-
   return (
     <Card
       icon={cilFile}

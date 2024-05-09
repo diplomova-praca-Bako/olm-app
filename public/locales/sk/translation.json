@@ -401,8 +401,9 @@
       "led": {
         "available_functions": {
           "title": "Dostupné funkcie",
-          "setLed": "Nastaví farbu jednej LED. pre L3D kocku od LookingGlass sú argumenty funkcie: 1. pole ktoré obsahuje [x,y,z] pozíciu LED a pole ktoré obsahuje [R,G,B] farebný kód. pre L3D kocku vyrobenú na FEI je argumentom funkcie pole, ktoré obsahuje [x,y,z] pozíciu LED.",
-          "setLeds": "Nastaví farbu viacerých LED. pre L3D kocku od LookingGlass sú argumenty funkcie: 1. 2 rozmerné pole ktoré obsahuje [x,y,z] pozície LED a pole ktoré obsahuje R,G,B farebný kód. pre L3D kocku vyrobenú na FEI je argumentom funkcie 2 rozmerné pole, ktoré obsahuje [x,y,z] pozície LED.",
+          "setLed": "Nastaví farbu jednej LED. pre LED kocku od LookingGlass sú argumenty funkcie: 1. pole ktoré obsahuje [x,y,z] pozíciu LED a pole ktoré obsahuje [R,G,B] farebný kód. pre LED kocku vyrobenú na FEI je argumentom funkcie pole, ktoré obsahuje [x,y,z] pozíciu LED.",
+          "clearLed": "Vypne LED diódu na danej pozícii",
+          "setLeds": "Nastaví farbu viacerých LED. pre LED kocku od LookingGlass sú argumenty funkcie: 1. 2 rozmerné pole ktoré obsahuje [x,y,z] pozície LED a pole ktoré obsahuje R,G,B farebný kód. pre LED kocku vyrobenú na FEI sa funkcia nepoužíva.",
           "sleep": "Vykoná oneskorenie. Argumentom funkcie sú milisekundy.",
           "clearCube": "Vypne všetky LED."
         }

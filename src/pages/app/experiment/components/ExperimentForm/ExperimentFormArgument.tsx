@@ -43,7 +43,7 @@ const ExperimentFormArgument: React.FC<Props> = ({
       <div className={className} style={style}>
         <CFormLabel>{argument.label}</CFormLabel>
         <AceEditor
-          mode={argument.label === 'Python' ? 'python' : 'c_cpp'}
+          mode={argument.label.includes('Python') ? 'python' : 'c_cpp'}
           theme="textmate"
           name={argument.name}
           width="100%"

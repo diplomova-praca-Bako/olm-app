@@ -402,8 +402,9 @@
       "led": {
         "available_functions": {
           "title": "Available functions",
-          "setLed": "Sets the color of one LED. for the L3D cube from LookingGlass, the arguments of the function are: 1. the field that contains the [x,y,z] position of the LED and the field that contains the [R,G,B] color code. for an L3D cube made on FEI, the function argument is an array that contains the [x,y,z] position of the LED.",
-          "setLeds": "Sets the color of multiple LEDs. for the L3D cube from LookingGlass, the arguments of the function are: 1. a 2-dimensional field that contains the [x,y,z] positions of the LED and a field that contains the [R,G,B] color code. for an L3D cube made on FEI, the argument of the function is a 2-dimensional array that contains the [x,y,z] position of the LED.",
+          "setLed": "Sets the color of one LED. for the LED cube from LookingGlass, the arguments of the function are: 1. the field that contains the [x,y,z] position of the LED and the field that contains the [R,G,B] color code. for an LED cube made on FEI, the function argument is an array that contains the [x,y,z] position of the LED.",
+          "clearLed": "Clears LED at given coordinates.",
+          "setLeds": "Sets the color of multiple LEDs. for the LED cube from LookingGlass, the arguments of the function are: 1. a 2-dimensional field that contains the [x,y,z] positions of the LED and a field that contains the [R,G,B] color code. for an LED cube made on FEI,this function is not used.",
           "sleep": "Performs a delay. The function argument is milliseconds.",
           "clearCube": "Turns off all LEDs."
         }

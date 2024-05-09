@@ -132,8 +132,8 @@ const ExperimentDashboard: React.FC<Props> = () => {
         window.dispatchEvent(new Event('resize'));
     }
 
-    const hasL3DCube = dashboard.experiments.some((experiment: { deviceType: { name: string | string[]; }; }) =>
-        experiment.deviceType.name.includes('L3Dcube')
+    const hasLED = dashboard.experiments.some((experiment: { deviceType: { name: string | string[]; }; }) =>
+        experiment.deviceType.name.includes('LED')
       );
 
     return (
@@ -152,7 +152,7 @@ const ExperimentDashboard: React.FC<Props> = () => {
             draggableHandle=".draggable-header">
 
 
-            {hasL3DCube ? (
+            {hasLED ? (
                 <div key="available-functions">
                     <Card title={t("experiments.dashboard.led.available_functions.title")}
                         minimization={[savedExperimentAvailableFunctionsMinimization, setSavedExperimentAvailableFunctionsMinimization]}
@@ -160,6 +160,7 @@ const ExperimentDashboard: React.FC<Props> = () => {
                         <div className="h-100" ref={element => experimentRefs.current["available-functions"] = element}>
                             <ul>
                                 <li><strong>setLed</strong> - {t("experiments.dashboard.led.available_functions.setLed")}</li>
+                                <li><strong>clearLed</strong> - {t("experiments.dashboard.led.available_functions.clearLed")}</li>
                                 <li><strong>setLeds</strong> - {t("experiments.dashboard.led.available_functions.setLeds")}</li>
                                 <li><strong>sleep</strong> - {t("experiments.dashboard.led.available_functions.sleep")}</li>
                                 <li><strong>clearCube</strong> - {t("experiments.dashboard.led.available_functions.clearCube")}</li>

@@ -46,7 +46,7 @@ const ShowUserExperiment: React.FC = () => {
       title={t('actions.show')}
       className="mb-3"
       actions={
-        userExperiment?.filled && !userExperiment?.experiment.deviceType.name.includes("L3Dcube") ? (
+        userExperiment?.filled && !userExperiment?.experiment.deviceType.name.includes("LED") ? (
           <ShowUserExperimentDownload
             url={(new URL(process.env.REACT_APP_API_ENDPOINT || 'https://olm-api.test/graphql')).origin
                 + '/api/export/user-experiment-result/' + userExperiment.id}

@@ -236,7 +236,7 @@ const ExperimentForm: React.FC<Props> = ({
 
     let rows: React.ReactNode[] = []
 
-    if (selectedExperiment?.deviceType.name.includes("L3Dcube")) {
+    if (selectedExperiment?.deviceType.name.includes("LED")) {
       let cols: React.ReactNode[] = []
 
       
@@ -447,7 +447,7 @@ const ExperimentForm: React.FC<Props> = ({
               </>
             )}
 
-            {selectedExperiment?.deviceType.name.includes("L3Dcube") && (
+            {selectedExperiment?.deviceType.name.includes("LED") && (
               <>
                 <CFormLabel className="d-block">{t('experiments.columns.input_type')}</CFormLabel>
                 <div className="d-flex mb-3">

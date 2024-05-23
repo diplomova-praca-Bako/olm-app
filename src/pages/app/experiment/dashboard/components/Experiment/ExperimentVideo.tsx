@@ -22,7 +22,7 @@ const ExperimentVideo: React.FC<Props> = () => {
     const { appState } = useContext(AppStateContext)
     const {t} = useTranslation()
     const [loading, setLoading] = useState(false);
-    const streamUrl = useRef<string>(`http://${dashboard.experiments[0].server?.api_domain}:9000/stream`);
+    const streamUrl = useRef<string>(`https://${dashboard.experiments[0].server?.api_domain}:9000/stream`);
     const videoStreamStatus = useVideoStreamStatusQuery({
             fetchPolicy: "network-only",
             variables: {
